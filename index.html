@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1><span class="auto-type"></span></h1>
+        <div class="converter-box">
+            <input type="number" id="temperature" placeholder="Enter temperature" required>
+
+            <div class="options">
+                <p>From:</p>
+                <div class="cont">
+
+                    <label><input type="radio" name="fromUnit" value="C" checked> Celsius</label>
+                    <label><input type="radio" name="fromUnit" value="F"> Fahrenheit</label>
+                    <label><input type="radio" name="fromUnit" value="K"> Kelvin</label>
+                    <label><input type="radio" name="fromUnit" value="R"> Rankine</label>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <label for="toUnit">Convert to:</label>
+                <select id="toUnit">
+          <option value="C">Celsius</option>
+          <option value="F">Fahrenheit</option>
+          <option value="K">Kelvin</option>
+          <option value="R">Rankine</option>
+        </select>
+            </div>
+
+            <button onclick="convertTemperature()">Convert</button>
+
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script>
+        // text desine
+        var typed = new Typed(".auto-type", {
+            strings: ["TC", "Temperature Converter"],
+            typeSpeed: 155,
+            backSpeed: 150,
+            loop: true,
+        });
+    </script>
+
+    <script>
+        function convertTemperature() {
+            const temp = parseFloat(document.getElementById("temperature").value);
+            const fromUnit = document.querySelector('input[name="fromUnit"]:checked').value;
+            const toUnit = document.getElementById("toUnit").value;
+            const resultDiv = document.getElementById("result");
+
+            if (isNaN(temp)) {
+                resultDiv.textContent = "Please enter a valid number!";
+                return;
+            }
+
+            let kelvin;
+
+            // Convert from any unit to Kelvin
+            switch (fromUnit) {
+                case "C":
+                    kelvin = temp + 273.15;
+                    break;
+                case "F":
+                    kelvin = (temp - 32) * 5 / 9 + 273.15;
+                    break;
+                case "K":
+                    kelvin = temp;
+                    break;
+                case "R":
+                    kelvin = temp * 5 / 9;
+                    break;
+            }
+
+            // Convert from Kelvin to target unit
+            let converted;
+            switch (toUnit) {
+                case "C":
+                    converted = kelvin - 273.15;
+                    break;
+                case "F":
+                    converted = (kelvin - 273.15) * 9 / 5 + 32;
+                    break;
+                case "K":
+                    converted = kelvin;
+                    break;
+                case "R":
+                    converted = kelvin * 9 / 5;
+                    break;
+            }
+
+            resultDiv.textContent = `Converted Temperature: ${converted.toFixed(2)} °${toUnit}`;
+
+
+
+        }
+    </script>
+</body>
+
+</html>
